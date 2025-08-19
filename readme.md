@@ -1,2 +1,2 @@
-##Þetta er Vélmenni I repoið.
-###Daníel og Pétur
+## Þetta er Vélmenni I repoið.
+### Daníel og Pétur
