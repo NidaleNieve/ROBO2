@@ -40,12 +40,26 @@ int main() {
   int moves = 0;
 
   for (int var = 1; var < 12; var += 1) {
-    Drivetrain.driveFor(reverse, 0.5, m); //reverse er forward, mótarnir eru öfugir
+    Drivetrain.driveFor(forward, 0.5, m);
     wait(0.3, seconds);
 
-    if (moves == 12) { //léleg forritun en stoppa forritið ef að moves er 12
+    if (moves == 12) { //léleg forritun en stoppa forritið þegar vélmennið er komið
       break;
     }
+    
+    if (var == 7) { //snúi við
+      Drivetrain.turnFor(right, 90, degrees); 
+      wait(0.3, seconds);
+
+      Drivetrain.driveFor(forward, 0.5, m);
+      wait(0.3, seconds);
+      
+      Drivetrain.turnFor(right, 90, degrees); 
+      wait(0.3, seconds);
+
+      var = 11; //set varið á 11 þannig þetta if fer ekki í gang aftur
+    }
+
     
 
   }
