@@ -60,7 +60,13 @@ int main() {
       var = 11; //set varið á 11 þannig þetta if fer ekki í gang aftur
     }
 
-    
+    //Aðal if fallið, sér til um í hvaða átt að beygja
+    if (var % 4 == 1 || var % 4 == 0) {
+      Drivetrain.turnFor(right, 90, degrees);
+    } else {
+      Drivetrain.turnFor(left, 90, degrees);
+    }
 
+    moves += 1; //bæti við moves til að vita hvenær vélmennið er komið
   }
 }
