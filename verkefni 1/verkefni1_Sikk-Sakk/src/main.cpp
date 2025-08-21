@@ -23,7 +23,7 @@ using namespace vex;
 int main() {
   vexcodeInit();
 
-  for (int var = 1, int moves = 0; moves >= 12; var += 1, moves += 1) { //stilli upp breytur
+  for (int var = 1, moves = 0; moves <= 12; var += 1, moves += 1) { //stilli upp breytur
     Drivetrain.driveFor(forward, 0.5, m);
     wait(0.3, seconds);
 
