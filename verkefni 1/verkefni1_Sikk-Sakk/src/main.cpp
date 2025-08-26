@@ -23,30 +23,32 @@ using namespace vex;
 int main() {
   vexcodeInit();
 
-  
-  for (double distance_m = 0.5; distance_m <= 2.5; distance_m += 0.5) {
-    double distance_mm = distance_m * 1000;  
-
-    
-    Brain.Screen.print("Keyri %.1f metra\n", distance_m);
-
-    
-    Drivetrain.driveFor(reverse, distance_mm, mm);
-    Drivetrain.driveFor(forward, distance_mm, mm);
-
-    wait(1, seconds); 
-  }
-
-  int moves = 0;
-
-  for (int var = 1; var < 12; var += 1) {
-    Drivetrain.driveFor(reverse, 0.5, m); //reverse er forward, mótarnir eru öfugir
+  for (int var = 1, moves = 0; moves <= 12; var += 1, moves += 1) { //stilli upp breytur
+    Drivetrain.driveFor(forward, 0.5, m);
     wait(0.3, seconds);
 
-    if (moves == 12) { //léleg forritun en stoppa forritið ef að moves er 12
-      break;
-    }
-    
+    if (var == 7) { //snúi við
+      Drivetrain.turnFor(right, 90, degrees); 
+      wait(0.3, seconds);
 
+      Drivetrain.driveFor(forward, 0.5, m);
+      wait(0.3, seconds);
+      
+      Drivetrain.turnFor(right, 90, degrees); 
+      wait(0.3, seconds);
+
+      var = 11; //set varið á 11 þannig þetta if fer ekki í gang aftur
+    }
+
+    //Aðal if fallið, sér til um í hvaða átt að beygja
+    if (var % 4 == 1 || var % 4 == 0) {
+      Drivetrain.turnFor(right, 90, degrees);
+    } else {
+      Drivetrain.turnFor(left, 90, degrees);
+    }
+
+    moves += 1; //bæti við moves til að vita hvenær vélmennið er komið
   }
+  
+  Drivetrain.driveFor(forward, 0.5, m); //keyri síðustu 50cm 
 }
