@@ -20,9 +20,13 @@
 
 using namespace vex;
 
+int gradur = 180; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-
-  Drivetrain.driveFor(forward, 150, mm);
+  
+  Drivetrain.turnToHeading(gradur + 10, degrees);
+  
+  //Drivetrain.driveFor(forward, 150, mm);
 }
