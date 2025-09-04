@@ -9,8 +9,8 @@ brain  Brain;
 
 // VEXcode device constructors
 controller Controller1 = controller(primary);
-motor LeftMotor = motor(PORT1, ratio18_1, false);
-motor RightMotor = motor(PORT10, ratio18_1, true);
+motor LeftMotor = motor(PORT1, ratio18_1, true);
+motor RightMotor = motor(PORT10, ratio18_1, false);
 
 // VEXcode generated functions
 

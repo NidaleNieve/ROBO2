@@ -16,24 +16,34 @@
 // Drivetrain           drivetrain    1, 10, D
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
+#include <cstdlib> //exit library
 #include "vex.h"
 
 using namespace vex;
 
-int gradur = 180; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
+void emergencyStop() {
+  LeftMotor.stop();
+  RightMotor.stop();
+  exit(0);
+}
+
+int gradur = 360; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
+  Controller1.ButtonX.pressed(emergencyStop);
+
   //Basic loopa sem fer í gegnum gradur var
   for (int x = 0; x < gradur; x++) {
     LeftMotor.setVelocity(20, percent);
-    RightMotor.setVelocity(50, percent);
+    RightMotor.setVelocity(40, percent);
     LeftMotor.spin(forward);
     RightMotor.spin(forward);
 
-    wait(10, msec);
+    wait(25, msec);
   }
-
+  LeftMotor.stop();
+  RightMotor.stop();
 }
