@@ -20,7 +20,6 @@
 #include "vex.h"
 
 using namespace vex;
-}
 
 int gradur = 360; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
 
@@ -43,8 +42,6 @@ int main() {
   vexcodeInit();
 
   thread t1 = thread(checkEmergencyStop);
-
-  Controller1.ButtonX.pressed(emergencyStop);
 
   //Basic loopa sem fer í gegnum gradur var
   for (int x = 0; x < gradur; x++) {
