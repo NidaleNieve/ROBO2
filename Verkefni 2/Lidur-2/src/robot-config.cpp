@@ -8,6 +8,7 @@ using code = vision::code;
 brain Brain;
 
 // VEXcode device constructors
+controller Controller1 = controller(primary);
 motor LeftDriveSmart = motor(PORT1, ratio18_1, false);
 motor RightDriveSmart = motor(PORT10, ratio18_1, true);
 gyro TurnGyroSmart = gyro(Brain.ThreeWirePort.D);

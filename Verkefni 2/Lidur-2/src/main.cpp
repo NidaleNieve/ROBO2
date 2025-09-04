@@ -21,8 +21,16 @@
 using namespace vex;
 
 int main() {
-  // Initializing Robot Configuration. DO NOT REMOVE!
-  vexcodeInit();
+  for (double distance_m = 0.5; distance_m <= 2.5; distance_m += 0.5) {
+    double distance_mm = distance_m * 1000;  
 
-  Drivetrain.driveFor(forward, 150, mm);
+    
+    Brain.Screen.print("Keyri %.1f metra\n", distance_m);
+
+    
+    Drivetrain.driveFor(reverse, distance_mm, mm);
+    Drivetrain.driveFor(forward, distance_mm, mm);
+
+    wait(1, seconds); 
+  }
 }
