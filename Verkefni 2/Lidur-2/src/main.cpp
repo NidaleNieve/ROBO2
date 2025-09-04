@@ -22,10 +22,12 @@ using namespace vex;
 
 volatile bool emergencyStop = false; // shared variable (read by multiple threads)
 
+bumper* emergencyButtonH = nullptr;
+
 // Emergency stop thread function
 int checkEmergencyStop() {
   while(true) {
-    if (Controller1.ButtonX.pressing()) {
+    if (Controller1.ButtonX.pressing() || (emergencyButtonH && emergencyButtonH->pressing())) {
       emergencyStop = true;
       Drivetrain.stop(); // stop immediately
       Brain.Screen.printAt(10, 50, "EMERGENCY STOP PRESSED!");
@@ -36,11 +38,11 @@ int checkEmergencyStop() {
 }
 
 int main() {
-  // Start the emergency stop thread
+  emergencyButtonH = new bumper(Brain.ThreeWirePort.H);
   thread t1 = thread(checkEmergencyStop);
 
   for (double distance_m = 0.5; distance_m <= 2.5; distance_m += 0.5) {
-    if (emergencyStop) break; // check before moving
+    if (emergencyStop) break; 
 
     double distance_mm = distance_m * 1000;  
     Brain.Screen.print("Keyri %.1f metra\n", distance_m);
@@ -54,12 +56,11 @@ int main() {
     wait(1, seconds); 
   }
 
-  // If emergency stop was triggered, halt program execution forever
   if (emergencyStop) {
     Drivetrain.stop();
-    Brain.Screen.printAt(10, 70, "PROGRAM HALTED.");
+    Brain.Screen.printAt(10, 70, "PROGRAM STOPED.");
     while (true) {
-      exit(0); // halt program
+      wait(100, msec); 
     }
   }
 }
