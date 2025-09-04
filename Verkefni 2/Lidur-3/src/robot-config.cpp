@@ -8,9 +8,12 @@ using code = vision::code;
 brain  Brain;
 
 // VEXcode device constructors
-controller Controller1 = controller(primary);
 motor LeftMotor = motor(PORT1, ratio18_1, true);
 motor RightMotor = motor(PORT10, ratio18_1, false);
+
+//emergency stop devices
+controller Controller1 = controller(primary);
+bumper BumperH = bumper(Brain.ThreeWirePort.H);
 
 // VEXcode generated functions
 

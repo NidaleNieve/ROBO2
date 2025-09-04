@@ -23,22 +23,6 @@ using namespace vex;
 
 int gradur = 360; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
 
-/*
-int checkEmergencyStop() {
-  while(true) {
-    if (Controller1.ButtonX.pressing()) {
-      LeftMotor.stop();
-      RightMotor.stop();
-      Brain.Screen.printAt(10, 50, "EMERGENCY STOP PRESSED!");
-
-      wait(50, msec);
-      exit(0);
-    }
-    wait(20, msec);
-  }
-}
-*/
-
 bool emergencyStop = false;
 void requestEmergencyStop() {
   emergencyStop = true;
@@ -50,7 +34,12 @@ int main() {
 
   //thread t1 = thread(checkEmergencyStop);
 
+  //Emergency stop kóðinn
   Controller1.ButtonX.pressed(requestEmergencyStop);
+  BumperH.pressed(requestEmergencyStop);
+
+  LeftMotor.setStopping(brake);
+  RightMotor.setStopping(brake);
 
   //Basic loopa sem fer í gegnum gradur var
   for (int x = 0; x < gradur; x++) {
