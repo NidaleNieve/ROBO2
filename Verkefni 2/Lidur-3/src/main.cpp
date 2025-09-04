@@ -20,18 +20,29 @@
 #include "vex.h"
 
 using namespace vex;
-
-void emergencyStop() {
-  LeftMotor.stop();
-  RightMotor.stop();
-  exit(0);
 }
 
 int gradur = 360; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
 
+int checkEmergencyStop() {
+  while(true) {
+    if (Controller1.ButtonX.pressing()) {
+      LeftMotor.stop();
+      RightMotor.stop();
+      Brain.Screen.printAt(10, 50, "EMERGENCY STOP PRESSED!");
+
+      wait(50, msec);
+      exit(0);
+    }
+    wait(20, msec);
+  }
+}
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+
+  thread t1 = thread(checkEmergencyStop);
 
   Controller1.ButtonX.pressed(emergencyStop);
 
