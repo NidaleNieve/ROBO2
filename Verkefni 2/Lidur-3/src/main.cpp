@@ -25,6 +25,15 @@ int gradur = 180; //breyta þessu til þess að velja gráðurnar sem vélmennin
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-    
-  //Drivetrain.driveFor(forward, 150, mm);
+
+  //Basic loopa sem fer í gegnum gradur var
+  for (int x = 0; x < gradur; x++) {
+    LeftMotor.setVelocity(20, percent);
+    RightMotor.setVelocity(50, percent);
+    LeftMotor.spin(forward);
+    RightMotor.spin(forward);
+
+    wait(10, msec);
+  }
+
 }
