@@ -23,6 +23,7 @@ using namespace vex;
 
 int gradur = 360; //breyta þessu til þess að velja gráðurnar sem vélmenninð keyrir í hring
 
+/*
 int checkEmergencyStop() {
   while(true) {
     if (Controller1.ButtonX.pressing()) {
@@ -36,15 +37,32 @@ int checkEmergencyStop() {
     wait(20, msec);
   }
 }
+*/
+
+bool emergencyStop = false;
+void requestEmergencyStop() {
+  emergencyStop = true;
+}
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-  thread t1 = thread(checkEmergencyStop);
+  //thread t1 = thread(checkEmergencyStop);
+
+  Controller1.ButtonX.pressed(requestEmergencyStop);
 
   //Basic loopa sem fer í gegnum gradur var
   for (int x = 0; x < gradur; x++) {
+    if (emergencyStop) {
+      LeftMotor.stop();
+      RightMotor.stop();
+      Brain.Screen.printAt(10, 50, "EMERGENCY STOP!");
+
+      wait(50, msec);
+      return 0;
+    }
+
     LeftMotor.setVelocity(20, percent);
     RightMotor.setVelocity(40, percent);
     LeftMotor.spin(forward);
