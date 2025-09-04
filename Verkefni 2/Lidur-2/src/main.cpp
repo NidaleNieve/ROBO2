@@ -20,19 +20,18 @@
 
 using namespace vex;
 
-volatile bool emergencyStop = false; // shared variable (read by multiple threads)
+volatile bool emergencyStop = false; 
 
 bumper* emergencyButtonH = nullptr;
 
-// Emergency stop thread function
 int checkEmergencyStop() {
   while(true) {
     if (Controller1.ButtonX.pressing() || (emergencyButtonH && emergencyButtonH->pressing())) {
       emergencyStop = true;
-      Drivetrain.stop(); // stop immediately
+      Drivetrain.stop(); 
       Brain.Screen.printAt(10, 50, "EMERGENCY STOP PRESSED!");
     }
-    wait(20, msec); // small delay to avoid hogging CPU
+    wait(20, msec); 
   }
   return 0;
 }
