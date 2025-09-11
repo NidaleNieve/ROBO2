@@ -61,20 +61,27 @@ const char* printToScreen_numberFormat() {
 }
 
 //prentar hraða og vegalengd
-void onevent_SpeedDisplay_0() {
+void speedDisplay() {
   Brain.Screen.clearLine(1);
   Brain.Screen.setCursor(Brain.Screen.row(), 1);
   Brain.Screen.setCursor(1, 1);
   Brain.Screen.print("Velocity:  ");
-  Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>((Drivetrain.velocity(rpm) / 60.0) * (6.28318530718 * 0.05)));
+
+  //Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>((Drivetrain.velocity(rpm) / 60.0) * (6.28318530718 * 0.05)));
+  double wheelRadius = 0.05; // meters
+  double drivetrainRPM = Drivetrain.velocity(velocityUnits::rpm);
+  double velocityMS = (drivetrainRPM / 60.0) * (2 * 3.14159265359 * wheelRadius);
+  Brain.Screen.print(velocityMS);
+
   Brain.Screen.print("m/s   Distance:  ");
-  DrivingDistance = DrivingDistance + ((Brain.Timer.time(seconds)) * (Drivetrain.velocity(rpm) / 60.0)) * (6.28318530718 * 0.05);
-  Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>(DrivingDistance));
+  //DrivingDistance = DrivingDistance + ((Brain.Timer.time(seconds)) * (Drivetrain.velocity(rpm) / 60.0)) * (6.28318530718 * 0.05);
+  //Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>(DrivingDistance));
+  Brain.Screen.print(Drivetrain.distance(distanceUnits::m));
   Brain.Screen.print("m");
 }
 
 //prenta ljósalevel
-void onevent_LightDisplay_0() {
+void lightDisplay() {
   Brain.Screen.clearLine(2);
   Brain.Screen.setCursor(Brain.Screen.row(), 1);
   Brain.Screen.setCursor(2, 1);
@@ -91,8 +98,8 @@ int main() {
   Controller1.ButtonX.pressed(onevent_Controller1ButtonX_pressed_0);
   BumperH.pressed(onevent_BumperH_pressed_0);
   // event handlers fyrir display
-  SpeedDisplay(onevent_SpeedDisplay_0);
-  LightDisplay(onevent_LightDisplay_0);
+  SpeedDisplay(speedDisplay);
+  LightDisplay(lightDisplay);
 
   wait(15, msec);
 
