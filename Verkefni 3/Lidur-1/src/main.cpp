@@ -42,11 +42,6 @@ void onevent_BumperH_pressed_0() {
   EmergencyStop = true;
 }
 
-// "when started" hat block
-int whenStarted1() {
-
-}
-
 // Used to find the format string for printing numbers with the
 // desired number of decimal places
 const char* printToScreen_numberFormat() {
@@ -76,7 +71,7 @@ void speedDisplay() {
   Brain.Screen.print("m/s   Distance:  ");
   //DrivingDistance = DrivingDistance + ((Brain.Timer.time(seconds)) * (Drivetrain.velocity(rpm) / 60.0)) * (6.28318530718 * 0.05);
   //Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>(DrivingDistance));
-  Brain.Screen.print(Drivetrain.distance(distanceUnits::m));
+  //Brain.Screen.print(Drivetrain.distance(distanceUnits::m));
   Brain.Screen.print("m");
 }
 
