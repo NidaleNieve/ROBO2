@@ -124,13 +124,11 @@ int main() {
       LightDisplay.broadcast();
       // sonar skynjari. Stoppar og beygir ef að finnur eitthvað nálægt
       if (RangeFinderE.distance(mm) < 700.0) {
-        Brain.Timer.clear();
         wait(0.02, seconds);
         Drivetrain.turn(right);
       }
       // keyri áfram ef ekkert er fyrir
       else {
-        Brain.Timer.clear();
         Drivetrain.setDriveVelocity(30.0, percent);
         Drivetrain.drive(forward);
       }
@@ -140,7 +138,6 @@ int main() {
     }
 
     else {
-      Brain.Timer.clear();
       Drivetrain.stop();
       wait(0.02, seconds);
     }
