@@ -62,16 +62,25 @@ void speedDisplay() {
   Brain.Screen.setCursor(1, 1);
   Brain.Screen.print("Velocity:  ");
 
-  //Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>((Drivetrain.velocity(rpm) / 60.0) * (6.28318530718 * 0.05)));
-  double wheelRadius = 0.05; // meters
-  double drivetrainRPM = Drivetrain.velocity(velocityUnits::rpm);
-  double velocityMS = (drivetrainRPM / 60.0) * (2 * 3.14159265359 * wheelRadius);
-  Brain.Screen.print(velocityMS);
-
+  //finn út hraðann í m/s útfrá rpm og wheel radius
+  double wheelRadius = 0.05;
+  double driverpm = Drivetrain.velocity(velocityUnits::rpm);
+  double velocity = (driverpm / 60.0) * (2 * 3.14159265359 * wheelRadius);
+  Brain.Screen.print(velocity);
   Brain.Screen.print("m/s   Distance:  ");
-  //DrivingDistance = DrivingDistance + ((Brain.Timer.time(seconds)) * (Drivetrain.velocity(rpm) / 60.0)) * (6.28318530718 * 0.05);
-  //Brain.Screen.print(printToScreen_numberFormat(), static_cast<float>(DrivingDistance));
-  //Brain.Screen.print(Drivetrain.distance(distanceUnits::m));
+
+  //Stilli upp distance breytu og timer til þess að geta reiknað vegalengd útfrá hraða
+  static double totalDistance = 0.0;
+  static double lastTime = Brain.Timer.time(sec);
+  //finn út tímann núna og nota það til þess að reikna tímann síðan síðast
+  double now = Brain.Timer.time(sec);
+  double timePass = now - lastTime;
+  lastTime = now;
+
+  //bæti við vegalengdina
+  totalDistance += velocity * timePass;
+
+  Brain.Screen.print(totalDistance);
   Brain.Screen.print("m");
 }
 
