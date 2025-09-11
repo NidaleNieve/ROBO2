@@ -8,11 +8,16 @@ using code = vision::code;
 brain Brain;
 
 // VEXcode device constructors
-motor LeftDriveSmart = motor(PORT1, ratio18_1, false);
-motor RightDriveSmart = motor(PORT10, ratio18_1, true);
-gyro TurnGyroSmart = gyro(Brain.ThreeWirePort.D);
-smartdrive Drivetrain = smartdrive(LeftDriveSmart, RightDriveSmart,
-                                   TurnGyroSmart, 319.19, 320, 130, mm, 1);
+motor LeftDriveSmart = motor(PORT10, ratio18_1, false);
+motor RightDriveSmart = motor(PORT1, ratio18_1, true);
+inertial DrivetrainInertial = inertial(PORT2);
+smartdrive Drivetrain = smartdrive(LeftDriveSmart, RightDriveSmart, DrivetrainInertial, 319.19, 320, 40, mm, 1);
+
+sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
+light LightC = light(Brain.ThreeWirePort.C);
+bumper BumperH = bumper(Brain.ThreeWirePort.H);
+controller Controller1 = controller(primary);
+motor Motor8 = motor(PORT8, ratio18_1, false);
 
 // VEXcode generated functions
 
@@ -21,20 +26,41 @@ smartdrive Drivetrain = smartdrive(LeftDriveSmart, RightDriveSmart,
  *
  * This should be called at the start of your int main function.
  */
-void vexcodeInit(void) {
-  Brain.Screen.print("Device initialization...");
-  Brain.Screen.setCursor(2, 1);
-  // calibrate the drivetrain gyro
+
+// generating and setting random seed
+void initializeRandomSeed(){
+  int systemTime = Brain.Timer.systemHighResolution();
+  double batteryCurrent = Brain.Battery.current();
+  double batteryVoltage = Brain.Battery.voltage(voltageUnits::mV);
+
+  // Combine these values into a single integer
+  int seed = int(batteryVoltage + batteryCurrent * 100) + systemTime;
+
+  // Set the seed
+  srand(seed);
+}
+
+bool vexcode_initial_drivetrain_calibration_completed = false;
+void calibrateDrivetrain() {
   wait(200, msec);
-  TurnGyroSmart.startCalibration(1);
-  Brain.Screen.print("Calibrating Gyro for Drivetrain");
-  // wait for the gyro calibration process to finish
-  while (TurnGyroSmart.isCalibrating()) {
+  Brain.Screen.print("Calibrating");
+  Brain.Screen.newLine();
+  Brain.Screen.print("Inertial");
+  DrivetrainInertial.calibrate();
+  while (DrivetrainInertial.isCalibrating()) {
     wait(25, msec);
   }
-  // reset the screen now that the calibration is complete
+  vexcode_initial_drivetrain_calibration_completed = true;
+  // Clears the screen and returns the cursor to row 1, column 1.
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(1, 1);
-  wait(50, msec);
-  Brain.Screen.clearScreen();
+}
+
+void vexcodeInit() {
+
+  // Calibrate the Drivetrain
+  calibrateDrivetrain();
+
+  //Initializing random seed.
+  initializeRandomSeed(); 
 }
