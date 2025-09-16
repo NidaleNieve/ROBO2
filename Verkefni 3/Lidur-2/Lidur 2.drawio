@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0" version="28.2.0">
+  <diagram name="Page-1" id="Daqd3i5Ga5iJaogz2EFC">
+    <mxGraphModel dx="1577" dy="1028" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="eiWLEtvQrKYwqufuO3t--4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kAjHJLqN5PqAAUwlbHLU-2" target="wormoZx7h-kq8mfD0d46-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kAjHJLqN5PqAAUwlbHLU-2" value="Start" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="365" y="160" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wormoZx7h-kq8mfD0d46-12" target="eiWLEtvQrKYwqufuO3t--33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="wormoZx7h-kq8mfD0d46-12" target="eiWLEtvQrKYwqufuO3t--49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wormoZx7h-kq8mfD0d46-12" value="Sér bláan lit?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="377" y="320" width="95" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="eiWLEtvQrKYwqufuO3t--54" target="wormoZx7h-kq8mfD0d46-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="290" as="targetPoint" />
+            <mxPoint x="419.5" y="940" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="425" y="700" />
+              <mxPoint x="530" y="700" />
+              <mxPoint x="530" y="290" />
+              <mxPoint x="425" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--33" value="Birtir Blár á skjánum" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="325" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="eiWLEtvQrKYwqufuO3t--49" target="eiWLEtvQrKYwqufuO3t--50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="eiWLEtvQrKYwqufuO3t--49" target="eiWLEtvQrKYwqufuO3t--54">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--49" value="Sér rauðan lit?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="377" y="450" width="95" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--50" value="Birtir Rauður á skjánum" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="455" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="eiWLEtvQrKYwqufuO3t--54" target="eiWLEtvQrKYwqufuO3t--55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--54" value="Sér grænan lit?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="377" y="580" width="95" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eiWLEtvQrKYwqufuO3t--55" value="Birtir Grænn á skjánum" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="585" width="80" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
