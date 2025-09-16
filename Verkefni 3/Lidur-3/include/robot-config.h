@@ -3,7 +3,7 @@ using namespace vex;
 // Brain
 extern brain Brain;
 
-// Vision Sensor
+//vision myndavélin
 using signature = vision::signature;
 extern signature Vision5__BLUEBOX;
 extern signature Vision5__GREENBOX;
@@ -14,16 +14,17 @@ extern signature Vision5__SIG_6;
 extern signature Vision5__SIG_7;
 extern vision Vision5;
 
-// Motors
-extern motor LeftMotor;
-extern motor RightMotor;
-extern sonar RangeFinder;
+// VEXcode devices
+extern motor LeftDriveSmart;
+extern motor RightDriveSmart;
+extern inertial DrivetrainInertial;
+extern smartdrive Drivetrain;
 
-// Distance Sensor (if needed)
-extern distance DistanceSensor;
+extern sonar RangeFinderE;
+extern bumper BumperH;
 
-// Gyroscope (if needed)
-extern gyro GyroSensor;
+extern controller Controller1;
+extern motor Motor8;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
