@@ -47,7 +47,7 @@ int displayThread() {
 // Constants
 const int STOP_DISTANCE = 400; // Stop distance in mm (40 cm)
 const int CENTER_FOV = 158;    // Center of the field of view
-const int OFFSET_X = 15;       // Offset for turning
+const int OFFSET_X = 25;       // Offset for turning
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -63,7 +63,7 @@ int main() {
 
   //aðal forritið
   EmergencyStop = false;
-  Drivetrain.setTurnVelocity(20.0, percent);
+  Drivetrain.setTurnVelocity(8.0, percent);
   Drivetrain.setDriveVelocity(30.0, percent);
   // Færi Arm upp þannig hann sé ekki fyrir
   Motor8.setVelocity(20.0, percent);
@@ -74,39 +74,40 @@ int main() {
   while ((!EmergencyStop)) {
     Vision5.takeSnapshot(Vision5__REDBOX); // Look for the red object
     double distance = RangeFinderE.distance(mm); // Measure distance in mm
-
-    if (Vision5.largestObject.exists) {
-      // Red object detected
+    
+    // Bakkar ef kassi er of nær
+    if (distance > 0 && distance < STOP_DISTANCE) {
+      //keyrir afturábak
+      Drivetrain.drive(reverse);
+      Direction = -1;
+    } else if (Vision5.largestObject.exists) {
+      // detected
       int objectCenterX = Vision5.largestObject.centerX;
 
-      if (distance > 0 && distance < STOP_DISTANCE) {
-        //keyri afturábak
-        Drivetrain.drive(reverse);
-        Direction = -1;
-      } else if (distance > STOP_DISTANCE) {
-        //keyri áfram
-        Drivetrain.drive(forward);
-        Direction = 1;
-      } else {
-        Drivetrain.stop();
-        Direction = 0;
-      }
-
-      // Adjust direction if the object is not centered
+      // Ef ekki centered, snýr
       if (objectCenterX > CENTER_FOV + OFFSET_X) {
-        //færi til hægri
+        //beygir til hægri
+        Drivetrain.stop();
         Drivetrain.turn(right);
         Direction = 2;
       } else if (objectCenterX < CENTER_FOV - OFFSET_X) {
-        //færi til vinstri
+        //beygir til vinstri
+        Drivetrain.stop();
         Drivetrain.turn(left);
         Direction = 3;
+      } else {
+        //beygir áfram
+        Drivetrain.drive(forward);
+        Direction = 1;
       }
     } else {
+      //ef ekkert fundið, stoppar
       Drivetrain.stop();
+      Direction = 0;
     }
     wait(5, msec);
   }
+  
   //stoppa alla mótora og forritið
   Motor8.stop();
   Drivetrain.stop();
