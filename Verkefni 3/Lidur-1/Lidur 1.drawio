@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0" version="28.2.3">
   <diagram name="Page-1" id="Daqd3i5Ga5iJaogz2EFC">
-    <mxGraphModel dx="946" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="996" dy="649" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -46,7 +46,7 @@
         <mxCell id="eiWLEtvQrKYwqufuO3t--13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="eiWLEtvQrKYwqufuO3t--6" target="eiWLEtvQrKYwqufuO3t--8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="eiWLEtvQrKYwqufuO3t--25" value="Nei" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="eiWLEtvQrKYwqufuO3t--13" vertex="1" connectable="0">
+        <mxCell id="eiWLEtvQrKYwqufuO3t--25" value="Já" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="eiWLEtvQrKYwqufuO3t--13" vertex="1" connectable="0">
           <mxGeometry x="0.0781" y="1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -59,24 +59,24 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="eiWLEtvQrKYwqufuO3t--26" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="eiWLEtvQrKYwqufuO3t--14" vertex="1" connectable="0">
+        <mxCell id="eiWLEtvQrKYwqufuO3t--26" value="Nei" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="eiWLEtvQrKYwqufuO3t--14" vertex="1" connectable="0">
           <mxGeometry x="-0.059" y="-5" relative="1" as="geometry">
-            <mxPoint x="1" y="-4" as="offset" />
+            <mxPoint x="1" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="eiWLEtvQrKYwqufuO3t--6" value="Er eitthvað fyrir framan?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="eiWLEtvQrKYwqufuO3t--6" value="&lt;div&gt;Er eitthvað&amp;nbsp;&lt;/div&gt;&lt;div&gt;fyrir framan?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="377" y="580" width="95" height="90" as="geometry" />
         </mxCell>
         <mxCell id="eiWLEtvQrKYwqufuO3t--16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="eiWLEtvQrKYwqufuO3t--8" target="eiWLEtvQrKYwqufuO3t--11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="eiWLEtvQrKYwqufuO3t--8" value="Keyrir áfram" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+        <mxCell id="eiWLEtvQrKYwqufuO3t--8" value="Beygir til hægri" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="310" y="730" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="eiWLEtvQrKYwqufuO3t--18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="eiWLEtvQrKYwqufuO3t--9" target="eiWLEtvQrKYwqufuO3t--11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="eiWLEtvQrKYwqufuO3t--9" value="Beygir til hægri" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+        <mxCell id="eiWLEtvQrKYwqufuO3t--9" value="Keyrir Áfram" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="460" y="730" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="eiWLEtvQrKYwqufuO3t--32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="1" source="eiWLEtvQrKYwqufuO3t--11" edge="1">
