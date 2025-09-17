@@ -72,7 +72,7 @@ int main() {
   Direction = 0;
   //keyri bara ef að emergency stop er ekki active
   while ((!EmergencyStop)) {
-    Vision5.takeSnapshot(Vision5__REDBOX); // Look for the red object
+    Vision5.takeSnapshot(Vision5__REDBOX); //tek mynd til að leita að rauðum kassa
     double distance = RangeFinderE.distance(mm); // Measure distance in mm
     
     // Bakkar ef kassi er of nær
@@ -107,7 +107,7 @@ int main() {
     }
     wait(5, msec);
   }
-  
+
   //stoppa alla mótora og forritið
   Motor8.stop();
   Drivetrain.stop();
