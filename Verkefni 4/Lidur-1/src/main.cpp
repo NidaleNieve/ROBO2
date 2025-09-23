@@ -30,6 +30,7 @@ using namespace vex;
 
 bool EmergencyStop;
 float threshold;
+int Direction; //1=miðju, 2=hægrimegin, 3=vinstrimegin, 0=stopped
 
 //Emergency Stop triggers
 void onevent_Controller1ButtonX_pressed_0() {
@@ -37,6 +38,30 @@ void onevent_Controller1ButtonX_pressed_0() {
 }
 void onevent_BumperH_pressed_0() {
   EmergencyStop = true;
+}
+
+void displayFunction() {
+  Brain.Screen.clearLine(1);
+  Brain.Screen.setCursor(1, 1);
+
+  //prenta direction
+  if (Direction == 1) {
+    Brain.Screen.print("Er í Miðjunni ");
+  } else if (Direction == 2) {
+    Brain.Screen.print("Er Hægramegin ");
+  } else if (Direction == 3) {
+    Brain.Screen.print("Er Vinstramegin ");
+  } else {
+    Brain.Screen.print("Stopped ");
+  }
+}
+
+int displayThread() {
+  while (true) {
+    displayFunction();
+    wait(100, msec);
+  }
+  return 0;
 }
 
 int main() {
@@ -48,16 +73,38 @@ int main() {
   Controller1.ButtonX.pressed(onevent_Controller1ButtonX_pressed_0);
   BumperH.pressed(onevent_BumperH_pressed_0);
 
+  thread displaythread = thread(displayThread);
+
   threshold = 30;
   while ((!EmergencyStop)) {
-    // If the reflectivity is greater than the threshold it will move the LeftMotor forward
-    if (LineTrackerA.reflectivity() > threshold) {
-      LeftMotor.spin(forward);
-      RightMotor.stop();
+    bool leftOnLine = LineTracker1.reflectivity() < threshold;
+    bool centerOnLine = LineTracker2.reflectivity() < threshold;
+    bool rightOnLine = LineTracker3.reflectivity() < threshold;
+
+    //Ef að er í miðjunni
+    if (centerOnLine && !leftOnLine && !rightOnLine) {
+      //fer áfram
+      LeftMotor.spin(forward, 50, percent);
+      RightMotor.spin(forward, 50, percent);
+      Direction = 1;
+    
+    //Ef að er hægramegin
+    } else if (leftOnLine) {
+      //Beygir til vinstri
+      LeftMotor.spin(forward, 20, percent);
+      RightMotor.spin(forward, 50, percent);
+      Direction = 2;
+
+    //Ef að er vinstramegin
+    } else if (rightOnLine) {
+      //Beygir til hægri
+      LeftMotor.spin(forward, 50, percent);
+      RightMotor.spin(forward, 20, percent);
+      Direction = 3;
     } else {
-      // If the reflectivity is less than the threshold it will move the RightMotor forward
+      //Stoppar ef engin lína er fundin
       LeftMotor.stop();
-      RightMotor.spin(forward);
+      RightMotor.stop();
     }
     wait(5, msec);
   }
