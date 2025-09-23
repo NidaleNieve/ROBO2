@@ -28,14 +28,28 @@
 
 using namespace vex;
 
+bool EmergencyStop;
 float threshold;
+
+//Emergency Stop triggers
+void onevent_Controller1ButtonX_pressed_0() {
+  EmergencyStop = true;
+}
+void onevent_BumperH_pressed_0() {
+  EmergencyStop = true;
+}
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+  
+  //emergency stop handlers
+  EmergencyStop = false;
+  Controller1.ButtonX.pressed(onevent_Controller1ButtonX_pressed_0);
+  BumperH.pressed(onevent_BumperH_pressed_0);
 
   threshold = 30;
-  while (true) {
+  while ((!EmergencyStop)) {
     // If the reflectivity is greater than the threshold it will move the LeftMotor forward
     if (LineTrackerA.reflectivity() > threshold) {
       LeftMotor.spin(forward);
@@ -47,4 +61,10 @@ int main() {
     }
     wait(5, msec);
   }
+
+  LeftMotor.stop();
+  RightMotor.stop();
+  Brain.programStop();
+  return 0;
+
 }
