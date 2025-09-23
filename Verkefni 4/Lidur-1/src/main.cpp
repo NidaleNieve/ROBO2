@@ -30,6 +30,7 @@ using namespace vex;
 
 bool EmergencyStop;
 float threshold;
+int margin;
 int Direction; //1=miðju, 2=hægrimegin, 3=vinstrimegin, 0=stopped
 
 //Emergency Stop triggers
@@ -44,11 +45,21 @@ void displayFunction() {
   Brain.Screen.clearLine(1);
   Brain.Screen.setCursor(1, 1);
 
+  Brain.Screen.print("L:%3d C:%3d R:%3d Th:%2.0f D:%d",
+                     LineTracker1.reflectivity(),
+                     LineTracker2.reflectivity(),
+                     LineTracker3.reflectivity(),
+                     threshold,
+                     Direction);
+
+
+  Brain.Screen.clearLine(2);
+  Brain.Screen.setCursor(2, 2);
   //prenta direction
   if (Direction == 1) {
-    Brain.Screen.print("Er í Miðjunni ");
+    Brain.Screen.print("Er í Midjunni ");
   } else if (Direction == 2) {
-    Brain.Screen.print("Er Hægramegin ");
+    Brain.Screen.print("Er Haegramegin ");
   } else if (Direction == 3) {
     Brain.Screen.print("Er Vinstramegin ");
   } else {
@@ -76,31 +87,32 @@ int main() {
   thread displaythread = thread(displayThread);
 
   threshold = 30;
+  margin = 4;
   while ((!EmergencyStop)) {
-    bool leftOnLine = LineTracker1.reflectivity() < threshold;
-    bool centerOnLine = LineTracker2.reflectivity() < threshold;
-    bool rightOnLine = LineTracker3.reflectivity() < threshold;
+    int left  = LineTracker1.reflectivity();
+    int center = LineTracker2.reflectivity();
+    int right = LineTracker3.reflectivity();
 
     //Ef að er í miðjunni
-    if (centerOnLine && !leftOnLine && !rightOnLine) {
+    if (center + margin < left && center + margin < right) {
       //fer áfram
-      LeftMotor.spin(forward, 50, percent);
-      RightMotor.spin(forward, 50, percent);
+      LeftMotor.spin(forward, 20, percent);
+      RightMotor.spin(forward, 20, percent);
       Direction = 1;
     
     //Ef að er hægramegin
-    } else if (leftOnLine) {
+    } else if (left + margin < right) {
       //Beygir til vinstri
       LeftMotor.spin(forward, 20, percent);
-      RightMotor.spin(forward, 50, percent);
-      Direction = 2;
+      RightMotor.spin(forward, 10, percent);
+      Direction = 3;
 
     //Ef að er vinstramegin
-    } else if (rightOnLine) {
+    } else if (right + margin < left) {
       //Beygir til hægri
-      LeftMotor.spin(forward, 50, percent);
+      LeftMotor.spin(forward, 10, percent);
       RightMotor.spin(forward, 20, percent);
-      Direction = 3;
+      Direction = 2;
     } else {
       //Stoppar ef engin lína er fundin
       LeftMotor.stop();
