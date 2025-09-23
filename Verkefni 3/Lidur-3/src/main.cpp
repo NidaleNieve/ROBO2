@@ -64,7 +64,8 @@ int main() {
   //aðal forritið
   EmergencyStop = false;
   Drivetrain.setTurnVelocity(8.0, percent);
-  Drivetrain.setDriveVelocity(30.0, percent);
+  double driveVelocity = 30.0;
+  Drivetrain.setDriveVelocity(driveVelocity, percent);
   // Færi Arm upp þannig hann sé ekki fyrir
   Motor8.setVelocity(20.0, percent);
   Motor8.spinToPosition(120.0, degrees, true);
@@ -75,12 +76,18 @@ int main() {
     Vision5.takeSnapshot(Vision5__REDBOX); //tek mynd til að leita að rauðum kassa
     double distance = RangeFinderE.distance(mm); // Measure distance in mm
     
-    // Bakkar ef kassi er of nær
-    if (distance > 0 && distance < STOP_DISTANCE) {
-      //keyrir afturábak
+    if (distance > (STOP_DISTANCE - 50) && distance < (STOP_DISTANCE + 50)) {
+      Drivetrain.stop();
+      Direction = 0;
+    
+    // Bakkar ef kassi er of nær, +- 5 cm
+    } else if (distance <= (STOP_DISTANCE - 50)) {
+      Drivetrain.setDriveVelocity(driveVelocity / 3, percent);
       Drivetrain.drive(reverse);
       Direction = -1;
     } else if (Vision5.largestObject.exists) {
+      //set hraðann aftur á 30
+      Drivetrain.setDriveVelocity(driveVelocity, percent);
       // detected
       int objectCenterX = Vision5.largestObject.centerX;
 
