@@ -11,8 +11,7 @@ extern motor LeftMotor;
 extern motor RightMotor;
 
 extern controller Controller1;
-extern motor Motor8;
-
+extern bumper BumperH;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
