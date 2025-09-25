@@ -98,7 +98,7 @@ int main() {
     int right = LineTracker3.reflectivity();
 
     //Ef að er í miðjunni
-    if (abs(center - left) <= margin && abs(center - right) <= margin) {
+    if ((center + margin < left) && (center + margin < right)) {
     //if (center + margin < left && center + margin < right) {
       //fer áfram
       LeftMotor.spin(forward, 20, percent);
@@ -108,24 +108,26 @@ int main() {
     //Ef að er hægramegin
     } else if (left + margin < right) {
       //Beygir til vinstri
-      LeftMotor.spin(forward, 15, percent);
-      RightMotor.spin(forward, 7, percent);
+      LeftMotor.spin(forward, 20, percent);
+      RightMotor.spin(forward, 10, percent);
       Direction = 3;
       lastDirection = 2;
 
     //Ef að er vinstramegin
     } else if (right + margin < left) {
       //Beygir til hægri
-      LeftMotor.spin(forward, 7, percent);
-      RightMotor.spin(forward, 15, percent);
+      LeftMotor.spin(forward, 10, percent);
+      RightMotor.spin(forward, 20, percent);
       Direction = 2;
       lastDirection = 2;
     } else {
-
+      //outside correction
+      //beygir til vinstri ef að var hægramegin
       if (lastDirection == 2) {
         LeftMotor.spin(forward, 7, percent);
         RightMotor.spin(forward, 15, percent);
         Direction = 3;
+      //beygir til hægri ef að var vinstramegin
       } else if (lastDirection == 3) {
         LeftMotor.spin(forward, 15, percent);
         RightMotor.spin(forward, 7, percent);
