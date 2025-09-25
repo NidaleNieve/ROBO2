@@ -78,10 +78,9 @@ int main() {
   vexcodeInit();
   
 
-  //L: 3, 
-
-
-
+  //L: 3 í loftinu, 17 á gólfi, 7 yfir línu
+  //C: 4 í loftinu, 24 á gólfi, 10 yfir línu 
+  //R: 3 í loftinu, 19 á gólfi, 8 yfir línu 
 
   //emergency stop handlers
   EmergencyStop = false;

@@ -77,6 +77,11 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   
+
+  //L: 3 í loftinu, 17 á gólfi, 7 yfir línu
+  //C: 4 í loftinu, 24 á gólfi, 10 yfir línu 
+  //R: 3 í loftinu, 19 á gólfi, 8 yfir línu 
+
   //emergency stop handlers
   EmergencyStop = false;
   Controller1.ButtonX.pressed(onevent_Controller1ButtonX_pressed_0);
@@ -84,46 +89,77 @@ int main() {
 
   thread displaythread = thread(displayThread);
 
-  //c 26
-  //L 20 - 24
-  //R 20 - 24
 
-  //allir 94 ef að engin lína
-
+  int baseL = 17, baseC = 24, baseR = 19; // drifting ground baselines
+  const int offL = 7,  offC = 10,  offR = 8; // half of (ground - line) per sensor
+  const int emaN = 10; // EMA factor: 1/emaN update each loop
 
   margin = 2;
-  while ((!EmergencyStop)) {
-    int left  = LineTracker1.reflectivity()/* + 3*/;
-    int center = LineTracker2.reflectivity() /* - 5;*/;
-    int right = LineTracker3.reflectivity();
+  int lastSide = 0; // -1 = left, +1 = right, 0 = center
 
-    //Ef að er í miðjunni
-    if (abs(center - left) <= margin && abs(center - right) <= margin) {
-    //if (center + margin < left && center + margin < right) {
-      //fer áfram
+  while (!EmergencyStop) {
+    
+    int left   = LineTracker1.reflectivity();
+    int center = LineTracker2.reflectivity();
+    int right  = LineTracker3.reflectivity();
+
+    // compute dynamic thresholds from drifting baselines
+    int thL = baseL - (offL - margin);
+    int thC = baseC - (offC - margin);
+    int thR = baseR - (offR - margin);
+
+    // decide if each sensor is on the line (darker)
+    bool L = (left < thL);
+    bool C = (center < thC);
+    bool R = (right < thR);
+
+    /*
+    // if a sensor is probably on floor (not line), update its baseline a little
+    if (!L) baseL = (baseL * (emaN - 1) + left)   / emaN;
+    if (!C) baseC = (baseC * (emaN - 1) + center) / emaN;
+    if (!R) baseR = (baseR * (emaN - 1) + right)  / emaN;
+    */
+
+    if (C) {
+      // center on line → go straight
       LeftMotor.spin(forward, 20, percent);
       RightMotor.spin(forward, 20, percent);
       Direction = 1;
-    
-    //Ef að er hægramegin
-    } else if (left + margin < right) {
-      //Beygir til vinstri
-      LeftMotor.spin(forward, 15, percent);
-      RightMotor.spin(forward, 7, percent);
-      Direction = 3;
-
-    //Ef að er vinstramegin
-    } else if (right + margin < left) {
-      //Beygir til hægri
-      LeftMotor.spin(forward, 7, percent);
-      RightMotor.spin(forward, 15, percent);
-      Direction = 2;
-    } else {
-      //Stoppar ef engin lína er fundin
-      LeftMotor.stop();
-      RightMotor.stop();
+      lastSide = 0;
     }
-    wait(5, msec);
+    else if (L) {
+      // left sees line → steer left
+      LeftMotor.spin(forward, 20, percent);
+      RightMotor.spin(forward, 10, percent);
+      Direction = 3;
+      lastSide = -1;
+    }
+    else if (R) {
+      // right sees line → steer right
+      LeftMotor.spin(forward, 10, percent);
+      RightMotor.spin(forward, 20, percent);
+      Direction = 2;
+      lastSide = 1;
+    }
+    else {
+      // no sensor sees line → recover
+      if (lastSide == -1) {
+        // last seen left → turn left in place
+        LeftMotor.spin(forward, 8, percent);
+        RightMotor.spin(forward, 15, percent);
+      } else if (lastSide == 1) {
+        // Beygji til hægri
+        LeftMotor.spin(forward, 15, percent);
+        RightMotor.spin(forward, 8, percent);
+      } else {
+        // never seen → stop
+        LeftMotor.stop();
+        RightMotor.stop();
+        Direction = 0;
+      }
+    }
+
+    wait(10, msec);
   }
 
   LeftMotor.stop();
