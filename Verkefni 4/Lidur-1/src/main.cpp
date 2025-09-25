@@ -91,7 +91,7 @@ int main() {
 
   //allir 94 ef að engin lína
 
-  margin = 25;
+  margin = 2;
   lastDirection = 1;
   while ((!EmergencyStop)) {
     int left  = LineTracker1.reflectivity();
@@ -105,8 +105,39 @@ int main() {
       RightMotor.spin(forward, 20, percent);
       Direction = 1;
       lastDirection = 1;
-    
-    //Ef að hægri skynjarinn er minnstur
+	
+    } else if (center < 75 && (left < 75 || right < 75)) {
+      if (right + margin < left) {
+        // hægri er dekkri -> smá til hægri
+        LeftMotor.spin(forward, 20, percent);
+        RightMotor.spin(forward, 18, percent);
+      } else if (left + margin < right) {
+        // vinstri er dekkri -> smá til vinstri
+        LeftMotor.spin(forward, 18, percent);
+        RightMotor.spin(forward, 20, percent);
+      } else {
+        // svipað dökkt báðum megin -> alveg beint
+        LeftMotor.spin(forward, 20, percent);
+        RightMotor.spin(forward, 20, percent);
+      }
+      Direction = 1;
+      lastDirection = 1; 
+    /*else if ((center + margin < left) || (center + margin < right)) {
+      if (left + margin < right ) {
+      //hægri er dekkri -> smá beygja til hægri
+        LeftMotor.spin(forward, 18, percent);
+        RightMotor.spin(forward, 15, percent);
+      } else if (left + margin < right) {
+        //vinstri er dekkri -> smá beygja til vinstri
+        LeftMotor.spin(forward, 15, percent);
+        RightMotor.spin(forward, 18, percent);
+      } else {
+        //báðar hliðar svipaðar -> beint
+        LeftMotor.spin(forward, 20, percent);
+        RightMotor.spin(forward, 20, percent);
+      }
+      Direction = 1;
+    */
     //Ef að er hægramegin
     } else if (left + margin < right) {
       //Beygir til vinstri
@@ -115,7 +146,7 @@ int main() {
       Direction = 3;
       lastDirection = 3;
 
-    //Ef að er vinstramegin er minnstur
+    //Ef að er vinstramegin
     } else if (right + margin < left) {
       //Beygir til hægri
       LeftMotor.spin(forward, 10, percent);
@@ -125,16 +156,19 @@ int main() {
 
     } else {
       //outside correction
+
       //beygir til vinstri ef að var hægramegin
       if (lastDirection == 2) {
         LeftMotor.spin(forward, 5, percent);
         RightMotor.spin(forward, 15, percent);
         Direction = 2;
+
       //beygir til hægri ef að var vinstramegin
       } else if (lastDirection == 3) {
         LeftMotor.spin(forward, 15, percent);
         RightMotor.spin(forward, 5, percent);
         Direction = 3;
+
       } else {
         //Stoppar ef engin lína er fundin
         LeftMotor.stop();
