@@ -91,7 +91,7 @@ int main() {
 
   //allir 94 ef að engin lína
 
-  margin = 2;
+  margin = 25;
   lastDirection = 1;
   while ((!EmergencyStop)) {
     int left  = LineTracker1.reflectivity();
@@ -122,22 +122,7 @@ int main() {
       }
       Direction = 1;
       lastDirection = 1; 
-    /*else if ((center + margin < left) || (center + margin < right)) {
-      if (left + margin < right ) {
-      //hægri er dekkri -> smá beygja til hægri
-        LeftMotor.spin(forward, 18, percent);
-        RightMotor.spin(forward, 15, percent);
-      } else if (left + margin < right) {
-        //vinstri er dekkri -> smá beygja til vinstri
-        LeftMotor.spin(forward, 15, percent);
-        RightMotor.spin(forward, 18, percent);
-      } else {
-        //báðar hliðar svipaðar -> beint
-        LeftMotor.spin(forward, 20, percent);
-        RightMotor.spin(forward, 20, percent);
-      }
-      Direction = 1;
-    */
+
     //Ef að er hægramegin
     } else if (left + margin < right) {
       //Beygir til vinstri
