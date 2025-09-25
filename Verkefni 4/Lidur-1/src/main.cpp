@@ -30,6 +30,7 @@ using namespace vex;
 
 bool EmergencyStop;
 int margin;
+int lastDirection;
 int Direction; //1=miðju, 2=hægrimegin, 3=vinstrimegin, 0=stopped
 
 //Emergency Stop triggers
@@ -90,8 +91,7 @@ int main() {
 
   //allir 94 ef að engin lína
 
-
-  margin = 2;
+  margin = 10;
   while ((!EmergencyStop)) {
     int left  = LineTracker1.reflectivity()/* + 3*/;
     int center = LineTracker2.reflectivity() /* - 5;*/;
@@ -111,6 +111,7 @@ int main() {
       LeftMotor.spin(forward, 15, percent);
       RightMotor.spin(forward, 7, percent);
       Direction = 3;
+      lastDirection = 2;
 
     //Ef að er vinstramegin
     } else if (right + margin < left) {
@@ -118,7 +119,24 @@ int main() {
       LeftMotor.spin(forward, 7, percent);
       RightMotor.spin(forward, 15, percent);
       Direction = 2;
+      lastDirection = 2;
     } else {
+
+      if (lastDirection == 2) {
+        LeftMotor.spin(forward, 7, percent);
+        RightMotor.spin(forward, 15, percent);
+        Direction = 3;
+      } else if (lastDirection == 3) {
+        LeftMotor.spin(forward, 15, percent);
+        RightMotor.spin(forward, 7, percent);
+        Direction = 2;
+      } else {
+        //Stoppar ef engin lína er fundin
+        LeftMotor.stop();
+        RightMotor.stop();
+        Direction = 0;
+      }
+
       //Stoppar ef engin lína er fundin
       LeftMotor.stop();
       RightMotor.stop();
