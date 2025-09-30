@@ -93,72 +93,96 @@ int main() {
 
   margin = 25;
   lastDirection = 1;
+
+  int lastLeft = 0;
+  int lastCenter = 0;
+  int lastRight = 0;
+
   while ((!EmergencyStop)) {
     int left  = LineTracker1.reflectivity();
     int center = LineTracker2.reflectivity();
     int right = LineTracker3.reflectivity();
 
-    // Tveir skynjarar < 75 -> halda beinni stefnu með ±2 leiðréttingu
-    if ( ((left < 75) && (center < 75)) ||
-         ((center < 75) && (right < 75)) ||
-         ((left < 75) && (right < 75)) ) {
-
-      if (right + margin < left) {
-        // hægri er dekkri -> smá til hægri
-        LeftMotor.spin(forward, 20, percent);
-        RightMotor.spin(forward, 18, percent);
-      } else if (left + margin < right) {
-        // vinstri er dekkri -> smá til vinstri
-        LeftMotor.spin(forward, 18, percent);
-        RightMotor.spin(forward, 20, percent);
-      } else {
-        // svipað dökkt báðum megin -> beint
-        LeftMotor.spin(forward, 20, percent);
-        RightMotor.spin(forward, 20, percent);
-      }
-      Direction = 1;
-      lastDirection = 1;
-
-    // Ef að er í miðjunni: miðja er dekkri en báðar hliðar
-    } else if ((center + margin < left) && (center + margin < right)) {
+    //Ef að er í miðjunni
+    if (center + (margin + 10) < left && center + (margin + 10) < right) {
+      //fer áfram
       LeftMotor.spin(forward, 20, percent);
       RightMotor.spin(forward, 20, percent);
       Direction = 1;
       lastDirection = 1;
 
-    // Ef að er hægramegin (lína vinstra megin) með smá hysteresis
-    } else if (left + margin + 8 < right) {
-      // Beygir til vinstri
-      LeftMotor.spin(forward, 30, percent);
-      RightMotor.spin(forward, 17, percent);
+      lastLeft = left;
+      lastCenter = center;
+      lastRight = right;
+
+    //Ef að hægri skynjarinn er minnstur
+    //Ef að er hægramegin
+    } else if (left + margin < right) {
+      //Beygir til vinstri
+      LeftMotor.spin(forward, 20, percent);
+      RightMotor.spin(forward, 10, percent);
       Direction = 3;
       lastDirection = 3;
 
-    // Ef að er vinstramegin (lína hægra megin) með smá hysteresis
-    } else if (right + margin + 8 < left) {
-      // Beygir til hægri
-      LeftMotor.spin(forward, 17, percent);
-      RightMotor.spin(forward, 30, percent);
+      lastLeft = left;
+      lastCenter = center;
+      lastRight = right;
+
+    //Ef að er vinstramegin er minnstur
+    } else if (right + margin < left) {
+      //Beygir til hægri
+      LeftMotor.spin(forward, 10, percent);
+      RightMotor.spin(forward, 20, percent);
       Direction = 2;
       lastDirection = 2;
 
+      lastLeft = left;
+      lastCenter = center;
+      lastRight = right;
+
     } else {
-      // outside correction
-      if (lastDirection == 2) {
-        LeftMotor.spin(forward, 10, percent);
-        RightMotor.spin(forward, 20, percent);
+      //outside correction
+      //beygir til vinstri ef að var hægramegin
+      if (lastRight + margin < lastLeft) {
+        LeftMotor.spin(forward, 5, percent);
+        RightMotor.spin(forward, 15, percent);
         Direction = 2;
-      } else if (lastDirection == 3) {
-        LeftMotor.spin(forward, 20, percent);
-        RightMotor.spin(forward, 10, percent);
+
+      //beygir til hægri ef að var vinstramegin
+      } else if (lastLeft + margin < lastRight) {
+        LeftMotor.spin(forward, 15, percent);
+        RightMotor.spin(forward, 5, percent);
         Direction = 3;
+
       } else {
+        //Stoppar ef engin lína er fundin
         LeftMotor.stop();
         RightMotor.stop();
         Direction = 0;
       }
+
+
+
+      //beygir til vinstri ef að var hægramegin
+      /*
+      if (lastDirection == 2) {
+        LeftMotor.spin(forward, 5, percent);
+        RightMotor.spin(forward, 15, percent);
+        Direction = 2;
+      //beygir til hægri ef að var vinstramegin
+      } else if (lastDirection == 3) {
+        LeftMotor.spin(forward, 15, percent);
+        RightMotor.spin(forward, 5, percent);
+        Direction = 3;
+      } else {
+        //Stoppar ef engin lína er fundin
+        LeftMotor.stop();
+        RightMotor.stop();
+        Direction = 0;
+      }
+      */
     }
-    wait(5, msec);
+    wait(1, msec);
   }
 
   LeftMotor.stop();
