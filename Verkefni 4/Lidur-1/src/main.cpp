@@ -124,12 +124,12 @@ int main() {
       lastRight = right;
       wait(50, msec);
 
-    //Ef að hægri skynjarinn er smá
+    //Ef að er vinstramegin er smá
     //} else if (left < 70 && center < 60) 
-    } else if (center < 80 && left < 60 && right > 60) {
+    } else if (center < 70 && left < 60 && right > 60) {
       //Beygir til vinstri
       LeftMotor.spin(forward, 25, percent);
-      RightMotor.spin(forward, 21, percent);
+      RightMotor.spin(forward, 18, percent);
       Direction = 4;
       lastDirection = 3;
 
@@ -137,11 +137,11 @@ int main() {
       lastCenter = center;
       lastRight = right;
 
-    //Ef að er vinstramegin er smá
+    //Ef að hægri skynjarinn er smá
     //} else if (right < 70 && center < 60) {
     } else if (center < 80 && right < 60 && left > 50) {
       //Beygir til hægri
-      LeftMotor.spin(forward, 21, percent);
+      LeftMotor.spin(forward, 18, percent);
       RightMotor.spin(forward, 25, percent);
       Direction = 5;
       lastDirection = 2;
@@ -150,13 +150,13 @@ int main() {
       lastCenter = center;
       lastRight = right;
 
-    //Ef að er hægramegin er minnstur
+    //Ef að er vinstramegin er minnstur
     //} else if (left < 70) {
     } else if (center > 60 && left < 70 && right > 50) {
     //} else if (left + margin < right) {
       //Beygir til vinstri
       LeftMotor.spin(forward, 25, percent);
-      RightMotor.spin(forward, 13, percent);
+      RightMotor.spin(forward, 7, percent);
       Direction = 3;
       lastDirection = 3;
 
@@ -164,11 +164,11 @@ int main() {
       lastCenter = center;
       lastRight = right;
 
-    //Ef að er vinstramegin er minnstur
+    //Ef að er hægramegin er minnstur
     //} else if (right < 70) {
     } else if (center > 60 && right < 70 && left > 60) {
       //Beygir til hægri
-      LeftMotor.spin(forward, 13, percent);
+      LeftMotor.spin(forward, 7, percent);
       RightMotor.spin(forward, 25, percent);
       Direction = 2;
       lastDirection = 2;
@@ -179,30 +179,49 @@ int main() {
 
     } else {
       //outside correction
-            if (lastDirection == 2) {
+      if (lastDirection == 2) {
         // Sharp turn left
-        LeftMotor.spin(forward, 0, percent);
+        LeftMotor.spin(reverse, 5, percent);
         RightMotor.spin(forward, 25, percent);
         Direction = 6;
-        wait(150, msec);
-        if (LineTracker1.reflectivity() > 70 &&
-            LineTracker2.reflectivity() > 70 &&
-            LineTracker3.reflectivity() > 70) {
-          // Gradual turn left if line not found
+
+        bool lineFound = false;
+        for (int i = 0; i < 4; i++) { // 
+          wait(150, msec);
+          if (LineTracker1.reflectivity() < 70 ||
+              LineTracker2.reflectivity() < 70 ||
+              LineTracker3.reflectivity() < 70) {
+            lineFound = true;
+            break; // Exit loop if line is found
+          }
+        }
+
+        if (!lineFound) {
+          // Gradual turn left if line not found after sharp turns
           LeftMotor.spin(forward, 5, percent);
           RightMotor.spin(forward, 20, percent);
         }
-        // beygir til hægri ef að var vinstramegin
+
+      // beygir til hægri ef að var vinstramegin
       } else if (lastDirection == 3) {
         // Sharp turn right
         LeftMotor.spin(forward, 25, percent);
-        RightMotor.spin(forward, 0, percent);
+        RightMotor.spin(reverse, 5, percent);
         Direction = 7;
-        wait(150, msec);
-        if (LineTracker1.reflectivity() > 70 &&
-            LineTracker2.reflectivity() > 70 &&
-            LineTracker3.reflectivity() > 70) {
-          // Gradual turn right if line not found
+
+        bool lineFound = false;
+        for (int i = 0; i < 4; i++) { // Try 4 times for 150ms each (total 600ms)
+          wait(150, msec);
+          if (LineTracker1.reflectivity() < 70 ||
+              LineTracker2.reflectivity() < 70 ||
+              LineTracker3.reflectivity() < 70) {
+            lineFound = true;
+            break; // Exit loop if line is found
+          }
+        }
+
+        if (!lineFound) {
+          // Gradual turn right if line not found after sharp turns
           LeftMotor.spin(forward, 20, percent);
           RightMotor.spin(forward, 5, percent);
         }
@@ -230,7 +249,7 @@ int main() {
         Direction = 0;
       }
       */
-     
+
       /*
       //stoppar ef engin lína hefur verið fundin
       if (lastRight == 0 && lastLeft == 0 && lastCenter == 0) {
