@@ -58,6 +58,7 @@ int displayThread() {
   return 0;
 }
 
+const int SLOW_DISTANCE = 400; // Slow distance in mm (40 cm)
 const int STOP_DISTANCE = 100; // Stop distance in mm (10 cm)
 const int CENTER_FOV = 158;    // Center of the field of view
 const int OFFSET_X = 25;       // Offset for turning
@@ -93,18 +94,37 @@ int main() {
 
   //stoppar forritið ef að currentTarget er búið
   while ((!EmergencyStop) && currentTarget != BUINN) {
-    Vision5.takeSnapshot(Vision5__REDBOX);
-    Vision5.takeSnapshot(Vision5__GREENBOX);
-    Vision5.takeSnapshot(Vision5__BLUEBOX);
+    //tek bara mynd af litnum sem við erum að leita að
+    vision::signature* targetSignature;
+    if (currentTarget == RED) {
+      Vision5.takeSnapshot(Vision5__REDBOX);
+      targetSignature = &Vision5__REDBOX;
+    } else if (currentTarget == BLUE) {
+      Vision5.takeSnapshot(Vision5__BLUEBOX);
+      targetSignature = &Vision5__BLUEBOX;
+    } else if (currentTarget == GREEN) {
+      Vision5.takeSnapshot(Vision5__GREENBOX);
+      targetSignature = &Vision5__GREENBOX;
+    }
+
     double distance = RangeFinderE.distance(mm); // Measure distance in mm
-    
-    if (distance > (STOP_DISTANCE - 50) && distance < (STOP_DISTANCE + 50)) {
-      Drivetrain.stop();
-    
-    // Bakkar ef kassi er of nær, +- 5 cm
-    } else if (distance <= (STOP_DISTANCE - 50)) {
-      Drivetrain.setDriveVelocity(driveVelocity / 3, percent);
-      Drivetrain.drive(reverse);
+
+    //ef að kassi er innan við slow distance (40cm) þá hægir hann á sér og opnar kló
+    if (distance > (SLOW_DISTANCE - 50) && distance < (SLOW_DISTANCE + 50)) {
+      driveVelocity = 10.0;
+      Drivetrain.setDriveVelocity(driveVelocity, percent);
+      ClawMotor.spinToPosition(30.0, degrees, false); // Opna kló
+      ArmMotor.spinToPosition(120.0, degrees, true);
+
+    } else if (distance > (STOP_DISTANCE - 20) && distance < (STOP_DISTANCE + 20)) {
+      driveVelocity = 0.0;
+      Drivetrain.setDriveVelocity(driveVelocity, percent);
+      ClawMotor.spinToPosition(0.0, degrees, false); // Loka kló
+      wait(500, msec);
+      //lyfti boxi
+      ArmMotor.spinToPosition(105.0, degrees, true);
+      
+
     } else if (Vision5.largestObject.exists) {
       //set hraðann aftur á 30
       Drivetrain.setDriveVelocity(driveVelocity, percent);
