@@ -58,6 +58,15 @@ int displayThread() {
   return 0;
 }
 
+const int STOP_DISTANCE = 100; // Stop distance in mm (10 cm)
+const int CENTER_FOV = 158;    // Center of the field of view
+const int OFFSET_X = 25;       // Offset for turning
+double driveVelocity = 30.0;
+
+enum TargetColor { RED, BLUE, GREEN, BUINN };
+TargetColor currentTarget = RED;
+bool boxHandled = false;
+
 int main() {
   // Calibrate the GPS Sensor before starting
   GPS9.calibrate();
@@ -73,6 +82,63 @@ int main() {
   BumperH.pressed(onevent_BumperH_pressed_0);
   thread displaythread = thread(displayThread);
 
+  wait(15, msec);
+
+  //aðal forritið
+  Drivetrain.setTurnVelocity(8.0, percent);
+  Drivetrain.setDriveVelocity(driveVelocity, percent);
+  // Færi Arm upp þannig hann sé ekki fyrir
+  ArmMotor.setVelocity(20.0, percent);
+  ArmMotor.spinToPosition(120.0, degrees, true);
+
+  //stoppar forritið ef að currentTarget er búið
+  while ((!EmergencyStop) && currentTarget != BUINN) {
+    Vision5.takeSnapshot(Vision5__REDBOX);
+    Vision5.takeSnapshot(Vision5__GREENBOX);
+    Vision5.takeSnapshot(Vision5__BLUEBOX);
+    double distance = RangeFinderE.distance(mm); // Measure distance in mm
+    
+    if (distance > (STOP_DISTANCE - 50) && distance < (STOP_DISTANCE + 50)) {
+      Drivetrain.stop();
+    
+    // Bakkar ef kassi er of nær, +- 5 cm
+    } else if (distance <= (STOP_DISTANCE - 50)) {
+      Drivetrain.setDriveVelocity(driveVelocity / 3, percent);
+      Drivetrain.drive(reverse);
+    } else if (Vision5.largestObject.exists) {
+      //set hraðann aftur á 30
+      Drivetrain.setDriveVelocity(driveVelocity, percent);
+      // detected
+      int objectCenterX = Vision5.largestObject.centerX;
+
+      // Ef ekki centered, snýr
+      if (objectCenterX > CENTER_FOV + OFFSET_X) {
+        //beygir til hægri
+        Drivetrain.stop();
+        Drivetrain.turn(right);
+      } else if (objectCenterX < CENTER_FOV - OFFSET_X) {
+        //beygir til vinstri
+        Drivetrain.stop();
+        Drivetrain.turn(left);
+      } else {
+        //beygir áfram
+        Drivetrain.drive(forward);
+      }
+    } else {
+      //ef ekkert fundið, stoppar
+      Drivetrain.stop();
+    }
+    wait(5, msec);
+  }
+
+  //stoppa alla mótora og forritið
+  ArmMotor.stop();
+  Drivetrain.stop();
+  Brain.programStop();
+  return 0;
+
+
+  /*
   Drivetrain.drive(forward);
 
   // Keep driving until the GPS's xPosition passes 0 (horizontal center)
@@ -89,5 +155,5 @@ int main() {
     wait(0.1, seconds);
   }
   Drivetrain.stop();
-
+  */
 }

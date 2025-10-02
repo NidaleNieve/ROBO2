@@ -13,6 +13,7 @@ motor RightDriveSmart = motor(PORT10, ratio18_1, false);
 inertial DrivetrainInertial = inertial(PORT2);
 
 motor ArmMotor = motor(PORT8, ratio18_1, false);
+motor ClawMotor = motor(PORT3, ratio18_1, false);
 
 gps GPS9 = gps(PORT9, 0.00, -240.00, mm, 180);
 vision Vision5 = vision(PORT5, 50, Vision5__BLUEBOX, Vision5__GREENBOX, Vision5__REDBOX, Vision5__SIG_4, Vision5__SIG_5, Vision5__SIG_6, Vision5__SIG_7);

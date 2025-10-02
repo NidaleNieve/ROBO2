@@ -5,6 +5,7 @@ extern brain Brain;
 // VEXcode devices
 extern smartdrive Drivetrain;
 extern motor ArmMotor;
+extern motor ClawMotor;
 extern gps GPS9;
 extern vision Vision5;
 extern sonar RangeFinderE;
