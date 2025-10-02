@@ -58,6 +58,37 @@ int displayThread() {
   return 0;
 }
 
+//function sem fer á ákveðin coordinates, fyrst x svo y
+void goTo(double targetX, double targetY) {
+  // keyri gegnum x
+  double x = GPS9.xPosition(mm);
+  if (targetX > x) {
+    Drivetrain.turnToHeading(0, degrees, true);
+    Drivetrain.drive(forward);
+    while (!EmergencyStop && GPS9.xPosition(mm) < targetX) wait(10, msec);
+    Drivetrain.stop();
+  } else if (targetX < x) {
+    Drivetrain.turnToHeading(180, degrees, true);
+    Drivetrain.drive(forward);
+    while (!EmergencyStop && GPS9.xPosition(mm) > targetX) wait(10, msec);
+    Drivetrain.stop();
+  }
+
+  // Keyri y
+  double y = GPS9.yPosition(mm);
+  if (targetY > y) {
+    Drivetrain.turnToHeading(90, degrees, true);
+    Drivetrain.drive(forward);
+    while (!EmergencyStop && GPS9.yPosition(mm) < targetY) wait(10, msec);
+    Drivetrain.stop();
+  } else if (targetY < y) {
+    Drivetrain.turnToHeading(270, degrees, true);
+    Drivetrain.drive(forward);
+    while (!EmergencyStop && GPS9.yPosition(mm) > targetY) wait(10, msec);
+    Drivetrain.stop();
+  }
+}
+
 const int SLOW_DISTANCE = 400; // Slow distance in mm (40 cm)
 const int STOP_DISTANCE = 100; // Stop distance in mm (10 cm)
 const int CENTER_FOV = 158;    // Center of the field of view
@@ -88,10 +119,19 @@ int main() {
   //aðal forritið
   Drivetrain.setTurnVelocity(8.0, percent);
   Drivetrain.setDriveVelocity(driveVelocity, percent);
-  // Færi Arm upp þannig hann sé ekki fyrir
+  // Færi Arm smá upp þannig hann sé ekki fyrir
   ArmMotor.setVelocity(20.0, percent);
-  ArmMotor.spinToPosition(120.0, degrees, true);
+  ArmMotor.spinToPosition(110.0, degrees, true);
 
+  //arm up
+  //ArmMotor.spinToPosition(130.0, degrees, true);
+
+  ClawMotor.setVelocity(20.0, percent);
+  //claw open
+  ClawMotor.spinToPosition(40.0, degrees, true);
+  //claw close
+  //ClawMotor.spinToPosition(-60.0, degrees, true);
+  
   //stoppar forritið ef að currentTarget er búið
   while ((!EmergencyStop) && currentTarget != BUINN) {
     //tek bara mynd af litnum sem við erum að leita að
@@ -113,17 +153,41 @@ int main() {
     if (distance > (SLOW_DISTANCE - 50) && distance < (SLOW_DISTANCE + 50)) {
       driveVelocity = 10.0;
       Drivetrain.setDriveVelocity(driveVelocity, percent);
-      ClawMotor.spinToPosition(30.0, degrees, false); // Opna kló
-      ArmMotor.spinToPosition(120.0, degrees, true);
+      ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
+      ClawMotor.spinToPosition(40.0, degrees, true); // Opna kló
 
     } else if (distance > (STOP_DISTANCE - 20) && distance < (STOP_DISTANCE + 20)) {
       driveVelocity = 0.0;
       Drivetrain.setDriveVelocity(driveVelocity, percent);
-      ClawMotor.spinToPosition(0.0, degrees, false); // Loka kló
+      ClawMotor.spinToPosition(-60.0, degrees, true); // Loka kló
       wait(500, msec);
       //lyfti boxi
-      ArmMotor.spinToPosition(105.0, degrees, true);
+      ArmMotor.spinToPosition(120.0, degrees, true); //fer upp með arm
       
+      if (currentTarget == RED) {
+        goTo(0, 0);
+        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
+        
+        //set current á næsta lit
+        currentTarget = BLUE;
+
+      } else if (currentTarget == BLUE) {
+        goTo(0, -500);
+        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
+        
+        //set current á næsta lit
+        currentTarget = GREEN;
+
+      } else if (currentTarget == GREEN) {
+        goTo(0, -1000);
+        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
+        
+        //set current á næsta lit
+        currentTarget = BUINN;
+      }
 
     } else if (Vision5.largestObject.exists) {
       //set hraðann aftur á 30
