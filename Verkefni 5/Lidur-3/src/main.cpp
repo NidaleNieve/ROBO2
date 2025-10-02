@@ -131,19 +131,21 @@ int main() {
   //claw close
   //ClawMotor.spinToPosition(-60.0, degrees, true);
   
+  goTo(0, 0); //fer á miðju
+
   //stoppar forritið ef að currentTarget er búið
   while ((!EmergencyStop) && currentTarget != BUINN) {
     //tek bara mynd af litnum sem við erum að leita að
-    vision::signature* targetSignature;
+    //vision::signature* targetSignature;
     if (currentTarget == RED) {
       Vision5.takeSnapshot(Vision5__REDBOX);
-      targetSignature = &Vision5__REDBOX;
+      //targetSignature = &Vision5__REDBOX;
     } else if (currentTarget == BLUE) {
       Vision5.takeSnapshot(Vision5__BLUEBOX);
-      targetSignature = &Vision5__BLUEBOX;
+      //targetSignature = &Vision5__BLUEBOX;
     } else if (currentTarget == GREEN) {
       Vision5.takeSnapshot(Vision5__GREENBOX);
-      targetSignature = &Vision5__GREENBOX;
+      //targetSignature = &Vision5__GREENBOX;
     }
 
     double distance = RangeFinderE.distance(mm); // Measure distance in mm
