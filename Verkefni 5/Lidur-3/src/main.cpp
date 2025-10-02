@@ -97,7 +97,6 @@ double driveVelocity = 30.0;
 
 enum TargetColor { RED, BLUE, GREEN, BUINN };
 TargetColor currentTarget = RED;
-bool boxHandled = false;
 
 int main() {
   // Calibrate the GPS Sensor before starting
@@ -151,39 +150,40 @@ int main() {
 
     //ef að kassi er innan við slow distance (40cm) þá hægir hann á sér og opnar kló
     if (distance > (SLOW_DISTANCE - 50) && distance < (SLOW_DISTANCE + 50)) {
-      driveVelocity = 10.0;
-      Drivetrain.setDriveVelocity(driveVelocity, percent);
-      ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
+      Drivetrain.setDriveVelocity(10.0, percent); //hægir á sér
+      ArmMotor.spinToPosition(50.0, degrees, true); //fer niður með arm
       ClawMotor.spinToPosition(40.0, degrees, true); // Opna kló
 
     } else if (distance > (STOP_DISTANCE - 20) && distance < (STOP_DISTANCE + 20)) {
-      driveVelocity = 0.0;
-      Drivetrain.setDriveVelocity(driveVelocity, percent);
+      Drivetrain.setDriveVelocity(0.0, percent); //stoppa alveg
       ClawMotor.spinToPosition(-60.0, degrees, true); // Loka kló
       wait(500, msec);
       //lyfti boxi
-      ArmMotor.spinToPosition(120.0, degrees, true); //fer upp með arm
-      
+      ArmMotor.spinToPosition(120.0, degrees, true); //fer hátt upp með arm
+
+      Drivetrain.setDriveVelocity(driveVelocity, percent); //set aftur venjulegan hraða
+      double armDown = 50.0; //hversu langt arm fer niður
+      double clawOpen = 40.0; //hversu langt kló opnast
       if (currentTarget == RED) {
         goTo(0, 0);
-        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
-        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
-        
+        ArmMotor.spinToPosition(armDown, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(clawOpen, degrees, true); //opna kló
+
         //set current á næsta lit
         currentTarget = BLUE;
 
       } else if (currentTarget == BLUE) {
         goTo(0, -500);
-        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
-        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
+        ArmMotor.spinToPosition(armDown, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(clawOpen, degrees, true); //opna kló
         
         //set current á næsta lit
         currentTarget = GREEN;
 
       } else if (currentTarget == GREEN) {
         goTo(0, -1000);
-        ArmMotor.spinToPosition(105.0, degrees, true); //fer niður með arm
-        ClawMotor.spinToPosition(40.0, degrees, true); //opna kló
+        ArmMotor.spinToPosition(armDown, degrees, true); //fer niður með arm
+        ClawMotor.spinToPosition(clawOpen, degrees, true); //opna kló
         
         //set current á næsta lit
         currentTarget = BUINN;
