@@ -63,12 +63,12 @@ void goTo(double targetX, double targetY) {
   // keyri gegnum x
   double x = GPS9.xPosition(mm);
   if (targetX > x) {
-    Drivetrain.turnToHeading(0, degrees, true);
+    Drivetrain.turn_for(0, degrees, true);
     Drivetrain.drive(forward);
     while (!EmergencyStop && GPS9.xPosition(mm) < targetX) wait(10, msec);
     Drivetrain.stop();
   } else if (targetX < x) {
-    Drivetrain.turnToHeading(180, degrees, true);
+    Drivetrain.turn_for(180, degrees, true);
     Drivetrain.drive(forward);
     while (!EmergencyStop && GPS9.xPosition(mm) > targetX) wait(10, msec);
     Drivetrain.stop();
